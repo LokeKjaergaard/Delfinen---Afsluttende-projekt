@@ -4,13 +4,15 @@ import java.time.LocalDate;
 
 public class Member {
     private String name;
-    private LocalDate   dateOfBirth;
-    private int uuid;
+    private LocalDate dateOfBirth;
+    private final int uuid;
     private static int nextId;
+    private ActivityType activityType;
 
-    public Member(String name, LocalDate dateOfBirth) {
+    public Member(String name, LocalDate dateOfBirth, ActivityType activityType) {
         this.name = name;
         this.dateOfBirth = dateOfBirth;
+        this.activityType = activityType;
         uuid = nextId;
         nextId++;
     }
@@ -27,6 +29,10 @@ public class Member {
 
     public int getUuid() {
         return uuid;
+    }
+
+    public ActivityType getActivityType() {
+        return activityType;
     }
 
     //setters
