@@ -1,8 +1,10 @@
+import UI.UserInterface;
+
 public class Main {
 
     void main (String[]args){
-        System.out.println("Hello World!");
-
+        UserInterface ui = new UserInterface();
+        ui.startUI();
     }
 
 }
