@@ -1,6 +1,8 @@
 ### IntelliJ IDEA ###
 out/
-.idea/workspace.xml
+.idea/
+*.iml
+target/
 
 ### Mac OS ###
 .DS_Store
