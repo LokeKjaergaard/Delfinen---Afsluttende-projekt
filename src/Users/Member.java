@@ -10,21 +10,18 @@ import java.time.Period;
 public class Member {
     private String name;
     private LocalDate dateOfBirth;
-    private final int uuid;
-    private static int nextId;
+    private final int UUID;
     private ActivityType activityType;
     private Member_type memberType;
 
 
 
-    public Member(String name, LocalDate dateOfBirth, ActivityType activityType) {
+    public Member(String name, LocalDate dateOfBirth, ActivityType activityType, int UUID) {
         this.name = name;
         this.dateOfBirth = dateOfBirth;
         this.activityType = activityType;
         setMemberType();
-        uuid = nextId;
-        nextId++;
-
+        this.UUID = UUID;
     }
 
     // getters
@@ -37,8 +34,8 @@ public class Member {
         return dateOfBirth;
     }
 
-    public int getUuid() {
-        return uuid;
+    public int getUUID() {
+        return UUID;
     }
 
     public ActivityType getActivityType() {
@@ -68,8 +65,5 @@ else{
 
     public void setDateOfBirth(LocalDate dateOfBirth) {
         this.dateOfBirth = dateOfBirth;
-
     }
-
-
 }
