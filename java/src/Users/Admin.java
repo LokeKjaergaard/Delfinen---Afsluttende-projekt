@@ -1,4 +1,4 @@
-package Brugere;
+package Users;
 
 public class Admin {
 }
