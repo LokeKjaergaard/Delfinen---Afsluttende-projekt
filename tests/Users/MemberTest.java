@@ -10,7 +10,7 @@ class MemberTest {
 
     @Test
     void createMember() {
-        Member member = new Member("John Doe", LocalDate.of(2004, 9, 10), ActivityType.PASSIVE);
+        Member member = new Member("John Doe", LocalDate.of(2004, 9, 10), ActivityType.PASSIVE, 1);
         assertNotNull(member);
         assertEquals("John Doe", member.getName());
         assertEquals(ActivityType.PASSIVE, member.getActivityType());

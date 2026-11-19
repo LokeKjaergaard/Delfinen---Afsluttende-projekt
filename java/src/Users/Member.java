@@ -5,16 +5,14 @@ import java.time.LocalDate;
 public class Member {
     private String name;
     private LocalDate dateOfBirth;
-    private final int uuid;
-    private static int nextId;
+    private final int UUID;
     private ActivityType activityType;
 
-    public Member(String name, LocalDate dateOfBirth, ActivityType activityType) {
+    public Member(String name, LocalDate dateOfBirth, ActivityType activityType, int UUID) {
         this.name = name;
         this.dateOfBirth = dateOfBirth;
         this.activityType = activityType;
-        uuid = nextId;
-        nextId++;
+        this.UUID = UUID;
     }
 
     // getters
@@ -27,8 +25,8 @@ public class Member {
         return dateOfBirth;
     }
 
-    public int getUuid() {
-        return uuid;
+    public int getUUID() {
+        return UUID;
     }
 
     public ActivityType getActivityType() {
