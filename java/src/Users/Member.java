@@ -4,7 +4,7 @@ import java.time.LocalDate;
 
 public class Member {
     private String name;
-    private LocalDate dateOfBirth;
+    private LocalDate   dateOfBirth;
     private int uuid;
     private static int nextId;
 
