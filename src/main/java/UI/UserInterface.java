@@ -59,10 +59,11 @@ public class UserInterface {
     private ActivityType parseActivityType(Scanner scanner) {
         while (true) {
             System.out.println();
+            System.out.println("What kind of activity type is this member?");
             System.out.println("1. Passive");
             System.out.println("2. Exerciser");
             System.out.println("3. Competitive");
-            int input = awaitInputInt(scanner, "What kind of activity is this member?");
+            int input = awaitInputInt(scanner, "Type in the corresponding number as seem above:");
             switch (input) {
                 case 1 -> {
                     return ActivityType.PASSIVE;
