@@ -1,7 +1,10 @@
 package DomainModel;
 
+import Activities.Discipline;
 import DataSource.FileHandler;
 import Users.ActivityType;
+import Users.BestTime;
+import Users.Competitive_swimmer;
 import Users.Member;
 
 import java.time.LocalDate;
@@ -34,5 +37,14 @@ public class Controller {
             changed = true;
         }
         return result;
+    }
+    public boolean addTime(int uuid, Discipline discipline, double time, LocalDate date) {
+        Member member = memberManager.findMember(uuid);
+        if (member instanceof Competitive_swimmer swimmer) {
+            swimmer.addTime(discipline, new BestTime(time, date));
+            changed = true;
+            return true;
+        }
+        return false;
     }
 }

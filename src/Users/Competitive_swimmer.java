@@ -14,9 +14,8 @@ public class Competitive_swimmer extends Member {
     private Map<Discipline, BestTime> disciplineBestime = new HashMap<>();
 
 
-    public Competitive_swimmer(String name, LocalDate dateOfBirth, ActivityType activityType, Discipline discipline, int bestTime) {
-        super(name, dateOfBirth, activityType);
-
+    public Competitive_swimmer(String name, LocalDate dateOfBirth, ActivityType activityType, int UUID) {
+        super(name, dateOfBirth, activityType, UUID);
     }
 
     public void addTime(Discipline discipline, BestTime time) {

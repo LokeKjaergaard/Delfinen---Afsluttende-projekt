@@ -1,8 +1,10 @@
 package UI;
 
+import Activities.Discipline;
 import DomainModel.Controller;
 import Users.ActivityType;
 import Users.Member;
+import Users.Competitive_swimmer;
 
 import java.time.LocalDate;
 import java.util.Scanner;
@@ -28,6 +30,23 @@ public class UserInterface {
                         System.out.println("Created the member");
                     } else System.out.println("Creation failed");
                 }
+                case "add time" -> {
+                    System.out.println("Registering a new time...");
+                    for (Member m : controller.getMemberArrayList()) {
+                        if (m instanceof Competitive_swimmer) {
+                            System.out.println(m.getUUID() + " - " + m.getName());
+                        }
+                    }
+                    int uuid = awaitInputInt(scanner, "Swimmer UUID?");
+                    Discipline discipline = parseDiscipline(scanner);
+                    double time = awaitInputDouble(scanner, "Time in seconds (e.g. 32.45)?");
+                    LocalDate date = LocalDate.parse(awaitInput(scanner, "Date of the time (YYYY-MM-DD)?"));
+
+                    if (controller.addTime(uuid, discipline, time, date)) {
+                        System.out.println("Time registered");
+                    } else System.out.println("No competitive swimmer with that UUID");
+                }
+
                 case "exit" -> {
                     return;
                 }
@@ -78,6 +97,35 @@ public class UserInterface {
                 return Integer.parseInt(awaitInput(scanner, text).trim());
             } catch (NumberFormatException e) {
                 System.out.println("That is not a whole number! Enter a whole number ex: 1, 2, 3 or 4");
+            }
+        }
+    }
+
+    private Discipline parseDiscipline(Scanner scanner) {
+        while (true) {
+            System.out.println();
+            System.out.println("1. Crawl");
+            System.out.println("2. Butterfly");
+            System.out.println("3. Backstroke");
+            System.out.println("4. Breaststroke");
+            int input = awaitInputInt(scanner, "Which discipline?");
+            switch (input) {
+                case 1 -> { return Discipline.CRAWL; }
+                case 2 -> { return Discipline.BUTTERFLY; }
+                case 3 -> { return Discipline.BACKSTROKE; }
+                case 4 -> { return Discipline.BREASTSTROKE; }
+                default -> System.out.println("That's not a valid choice. Try again.");
+            }
+        }
+    }
+
+    private static double awaitInputDouble(Scanner scanner, String text) {
+        while (true) {
+            try {
+                // replace(",", ".") så både 32,45 og 32.45 virker
+                return Double.parseDouble(awaitInput(scanner, text).trim().replace(",", "."));
+            } catch (NumberFormatException e) {
+                System.out.println("That is not a number! Enter e.g. 32.45");
             }
         }
     }
