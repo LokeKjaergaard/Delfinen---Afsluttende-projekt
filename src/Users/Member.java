@@ -4,7 +4,7 @@ import java.time.LocalDate;
 import java.time.Period;
 
 
-public class Member {
+public class  Member {
     private String name;
     private LocalDate dateOfBirth;
     private final int uuid;
