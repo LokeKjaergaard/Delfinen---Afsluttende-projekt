@@ -15,6 +15,7 @@ public class UserInterface {
 
     public void startUI() {
         while (true) {
+            printHelp();
             String input = awaitInput(scanner, "Please make your choice.").toLowerCase();
             switch (input) {
                 case "create" -> {
@@ -56,7 +57,16 @@ public class UserInterface {
 
     }
 
-    private ActivityType parseActivityType(Scanner scanner) {
+    // PLEASE: write any new commands in this section!
+    private void printHelp() {
+        System.out.println();
+        System.out.println("Possible commands:");
+        System.out.println("- create - creates a new member to the database.");
+        System.out.println("- add time - create a new compilation time, for a given discipline, into the database");
+        System.out.println("- exit - terminates the program");
+    }
+
+    private ActivityType parseActivityType() {
         while (true) {
             System.out.println();
             System.out.println("What kind of activity type is this member?");
