@@ -4,7 +4,7 @@ import java.time.LocalDate;
 import java.time.Period;
 
 
-public class  Member {
+public class Member {
     private String name;
     private LocalDate dateOfBirth;
     private final int uuid;
@@ -17,6 +17,8 @@ public class  Member {
     private static final int SENIOR_DISCOUNT_FEE = 1200;
 
     public Member(String name, LocalDate dateOfBirth, ActivityType activityType) {
+
+    public Member(String name, LocalDate dateOfBirth, ActivityType activityType, int UUID) {
         this.name = name;
         this.dateOfBirth = dateOfBirth;
         this.activityType = activityType;
@@ -34,8 +36,8 @@ public class  Member {
         return dateOfBirth;
     }
 
-    public int getUuid() {
-        return uuid;
+    public int getUUID() {
+        return UUID;
     }
 
     public ActivityType getActivityType() {
@@ -64,8 +66,23 @@ public class  Member {
 
         return SENIOR_FEE;
     }
+    public int getAge(){
+        return Period.between(dateOfBirth, LocalDate.now()).getYears();
+    }
+
+    public Member_type getMemberType() {
+        return memberType;
+    }
 
     //setters
+    public void setMemberType(){
+if(getAge() < 18){
+    this.memberType = Member_type.JUNIOR;
+}
+else{
+    this.memberType = Member_type.SENIOR;
+}
+    }
 
     public void setName(String name) {
         this.name = name;
