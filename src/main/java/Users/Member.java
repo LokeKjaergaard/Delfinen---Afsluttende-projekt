@@ -14,6 +14,12 @@ public class Member {
     private ActivityType activityType;
     private Member_type memberType;
 
+    //Annual membership fees
+    private static final int PASSIVE_FEE = 500;
+    private static final int JUNIOR_FEE = 1000;
+    private static final int SENIOR_FEE = 1600;
+    private static final int SENIOR_DISCOUNT_FEE = 1200;
+
 
     public Member(String name, LocalDate dateOfBirth, ActivityType activityType, int UUID) {
         setName(name);
@@ -41,17 +47,36 @@ public class Member {
         return activityType;
     }
 
-    public int getAge() {
-        return Period.between(dateOfBirth, LocalDate.now()).getYears();
+    public int getAge(LocalDate referenceDate) {
+        return Period.between(dateOfBirth, referenceDate).getYears();
     }
 
     public Member_type getMemberType() {
         return memberType;
     }
 
+    // Calculate annual fee
+    public int calculateFee(LocalDate referenceDate) {
+        if (activityType == ActivityType.PASSIVE) {
+            return PASSIVE_FEE;
+        }
+
+        int age = getAge(referenceDate);
+
+        if (age < 18) {
+            return JUNIOR_FEE;
+        }
+
+        if (age >= 60) {
+            return SENIOR_DISCOUNT_FEE;
+        }
+
+        return SENIOR_FEE;
+    }
+
     //setters
     public void setMemberType() {
-        if (getAge() < 18) {
+        if (getAge(LocalDate.now()) < 18) {
             this.memberType = Member_type.JUNIOR;
         } else {
             this.memberType = Member_type.SENIOR;
