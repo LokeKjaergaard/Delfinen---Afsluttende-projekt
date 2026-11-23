@@ -136,14 +136,15 @@ public class UserInterface {
             }
         }
     }
-public String formatMember(Member member) {
-String name = member.getName();
-int age = member.getAge();
-int uuid = member.getUUID();
-Member_type memberType = member.getMemberType();
-ActivityType activityType = member.getActivityType();
-return uuid + " | " + name + " | " + age + " | " + memberType + " | " + activityType;
-}
+
+    public String formatMember(Member member) {
+        String name = member.getName();
+        int age = member.getAge();
+        int uuid = member.getUUID();
+        Member_type memberType = member.getMemberType();
+        ActivityType activityType = member.getActivityType();
+        return uuid + " | " + name + " | " + age + " | " + memberType + " | " + activityType;
+    }
 
     private Discipline parseDiscipline(Scanner scanner) {
         while (true) {
