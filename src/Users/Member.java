@@ -65,5 +65,6 @@ else{
 
     public void setDateOfBirth(LocalDate dateOfBirth) {
         this.dateOfBirth = dateOfBirth;
+        setMemberType();
     }
 }
