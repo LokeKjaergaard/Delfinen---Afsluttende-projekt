@@ -1,6 +1,7 @@
 package DomainModel;
 
 import Users.ActivityType;
+import Users.Competitive_swimmer;
 import Users.Member;
 
 import java.time.LocalDate;
@@ -20,7 +21,14 @@ public class MemberManager {
      * Creates a new member, adds them to the memberArrayList and then remembers the UUID so it won't be used in the future.
      */
     public boolean createMember(String name, LocalDate dateOfBirth, ActivityType activityType) {
-        return memberArrayList.add(new Member(name, dateOfBirth, activityType, generateNextUUID()));
+        int uuid = generateNextUUID();
+        Member member;
+        if (activityType == ActivityType.COMPETITIVE) {
+            member = new Competitive_swimmer(name, dateOfBirth, activityType, uuid);
+        } else {
+            member = new Member(name, dateOfBirth, activityType, uuid);
+        }
+        return memberArrayList.add(member);
     }
 
     public boolean deleteMember(Member member) {
@@ -42,4 +50,14 @@ public class MemberManager {
         return nextUUID;
 
     }
+
+    public Member findMember(int uuid) {
+        for (Member member : memberArrayList) {
+            if (member.getUUID() == uuid) {
+                return member;
+            }
+        }
+        return null;
+    }
+
 }
