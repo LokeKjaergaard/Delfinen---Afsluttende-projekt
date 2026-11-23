@@ -1,5 +1,7 @@
 package Users;
 
+import Membership.Member_type;
+
 import java.time.LocalDate;
 import java.time.Period;
 
@@ -7,7 +9,7 @@ import java.time.Period;
 public class Member {
     private String name;
     private LocalDate dateOfBirth;
-    private final int uuid;
+    private final int UUID;
     private static int nextId;
     private ActivityType activityType;
 
@@ -16,14 +18,15 @@ public class Member {
     private static final int SENIOR_FEE = 1600;
     private static final int SENIOR_DISCOUNT_FEE = 1200;
 
-    public Member(String name, LocalDate dateOfBirth, ActivityType activityType) {
 
     public Member(String name, LocalDate dateOfBirth, ActivityType activityType, int UUID) {
         this.name = name;
         this.dateOfBirth = dateOfBirth;
         this.activityType = activityType;
-        uuid = nextId;
-        nextId++;
+        SetMemberType();
+        this.UUID = UUID;
+
+
     }
 
     // getters
