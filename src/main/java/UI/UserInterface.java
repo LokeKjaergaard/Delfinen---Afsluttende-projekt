@@ -33,9 +33,9 @@ public class UserInterface {
                         System.out.println("Created the member");
                     } else System.out.println("Creation failed");
                 }
-                //viser en liste over medlemmerne og deres oplysninger
-                case "members" ->{
-                   ArrayList<Member> members = controller.getMemberArrayList();
+                //Shows a list of all members
+                case "members" -> {
+                    ArrayList<Member> members = controller.getMemberArrayList();
                     if (members.isEmpty()) {
                         System.out.println("There are no members in the club.");
                     } else {
