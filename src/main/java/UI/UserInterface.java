@@ -76,10 +76,10 @@ public class UserInterface {
      * @param action 0 = generic, 1 = reprompt if the date is in the future.
      * @return LocalDate
      */
-    public LocalDate promptLocalDateFromString(int action) {
+    public LocalDate promptLocalDateFromString(int action, String text) {
         while (true) {
             try {
-                LocalDate date = LocalDate.parse(awaitInput(scanner, "Date of birth (YYYY-MM-DD)?"));
+                LocalDate date = LocalDate.parse(awaitInput(scanner, text + " (YYYY-MM-DD)?"));
                 switch (action) {
                     case 0 -> {
                         return date;
@@ -136,14 +136,15 @@ public class UserInterface {
             }
         }
     }
-public String formatMember(Member member) {
-String name = member.getName();
-int age = member.getAge();
-int uuid = member.getUUID();
-Member_type memberType = member.getMemberType();
-ActivityType activityType = member.getActivityType();
-return uuid + " | " + name + " | " + age + " | " + memberType + " | " + activityType;
-}
+
+    public String formatMember(Member member) {
+        String name = member.getName();
+        int age = member.getAge();
+        int uuid = member.getUUID();
+        Member_type memberType = member.getMemberType();
+        ActivityType activityType = member.getActivityType();
+        return uuid + " | " + name + " | " + age + " | " + memberType + " | " + activityType;
+    }
 
     private Discipline parseDiscipline(Scanner scanner) {
         while (true) {
@@ -190,7 +191,7 @@ return uuid + " | " + name + " | " + age + " | " + memberType + " | " + activity
 
         try {
             String name = promptMemberName();
-            LocalDate dateOfBirth = promptLocalDateFromString(1);
+            LocalDate dateOfBirth = promptLocalDateFromString(1, "Date of birth");
             ActivityType activityType = parseActivityType();
             // creates the member and adds them to the memberList
             boolean result = controller.createMember(name, dateOfBirth, activityType);
@@ -226,7 +227,7 @@ return uuid + " | " + name + " | " + age + " | " + memberType + " | " + activity
         int uuid = awaitInputInt(scanner, "Swimmer UUID?");
         Discipline discipline = parseDiscipline(scanner);
         double time = awaitInputDouble(scanner, "Time in seconds (e.g. 32.45)?");
-        LocalDate date = promptLocalDateFromString(1);
+        LocalDate date = promptLocalDateFromString(1, "Enter the date of the time");
 
         if (controller.addTime(uuid, discipline, time, date)) {
             System.out.println("Time registered");

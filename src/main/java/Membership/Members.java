@@ -10,7 +10,7 @@ public class Members {
     public Members() {
         members = new ArrayList<>();
     }
-    // tilføjer et medlem til listen
+    // Adds a member to the list
     public void addMember(Member member){
         members.add(member);
     }
