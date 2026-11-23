@@ -92,3 +92,4 @@ public class Member {
         this.activityType = activityType;
     }
 }
+//ftygyvyv
