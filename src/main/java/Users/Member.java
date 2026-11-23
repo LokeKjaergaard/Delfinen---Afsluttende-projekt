@@ -80,6 +80,7 @@ public class Member {
             );
         }
         this.dateOfBirth = dateOfBirth;
+        setMemberType();
     }
 
     public void setActivityType(ActivityType activityType) {

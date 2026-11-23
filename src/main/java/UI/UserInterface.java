@@ -2,6 +2,8 @@ package UI;
 
 import Activities.Discipline;
 import DomainModel.Controller;
+import Membership.Member_type;
+
 import Users.ActivityType;
 import Users.Member;
 import Users.Competitive_swimmer;
@@ -10,6 +12,7 @@ import java.time.DateTimeException;
 import java.time.LocalDate;
 import java.util.Scanner;
 import java.util.concurrent.CancellationException;
+import java.util.ArrayList;
 
 public class UserInterface {
     private final Scanner scanner = new Scanner(System.in);
@@ -21,6 +24,7 @@ public class UserInterface {
             String input = awaitInput(scanner, "Please make your choice.").toLowerCase();
             switch (input) {
                 case "create" -> createMember();
+                case "members" -> listMembers();
                 case "add time" -> addTime();
                 case "exit" -> {
                     return;
@@ -35,6 +39,7 @@ public class UserInterface {
         System.out.println();
         System.out.println("Possible commands:");
         System.out.println("- create - creates a new member to the database.");
+        System.out.println("- members - lists all current members");
         System.out.println("- add time - create a new compilation time, for a given discipline, into the database");
         System.out.println("- exit - terminates the program");
     }
@@ -131,6 +136,14 @@ public class UserInterface {
             }
         }
     }
+public String formatMember(Member member) {
+String name = member.getName();
+int age = member.getAge();
+int uuid = member.getUUID();
+Member_type memberType = member.getMemberType();
+ActivityType activityType = member.getActivityType();
+return uuid + " | " + name + " | " + age + " | " + memberType + " | " + activityType;
+}
 
     private Discipline parseDiscipline(Scanner scanner) {
         while (true) {
@@ -189,6 +202,17 @@ public class UserInterface {
             System.out.println("Cancelled creation");
         } catch (Exception e) {
             System.out.println("an error occurred. " + e.getMessage());
+        }
+    }
+
+    private void listMembers() {
+        ArrayList<Member> members = controller.getMemberArrayList();
+        if (members.isEmpty()) {
+            System.out.println("There are no members in the club.");
+        } else {
+            for (Member member : members) {
+                System.out.println(formatMember(member));
+            }
         }
     }
 
