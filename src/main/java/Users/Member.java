@@ -83,6 +83,11 @@ public class Member {
     }
 
     public void setActivityType(ActivityType activityType) {
+        if (activityType == null){
+            throw new IllegalArgumentException (
+                    "Activity type must be set!"
+            );
+        }
         this.activityType = activityType;
     }
 }
