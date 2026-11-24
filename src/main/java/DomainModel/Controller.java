@@ -6,6 +6,7 @@ import Users.ActivityType;
 import Users.BestTime;
 import Users.Competitive_swimmer;
 import Users.Member;
+import Users.CompetitionResult;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -45,6 +46,17 @@ public class Controller {
             swimmer.addTime(discipline, new BestTime(time, date));
             changed = true;
             return true;
+        }
+        return false;
+    }
+
+    public boolean addCompetitionResult(int uuid, String competitionName, LocalDate date, Discipline discipline, int placement, double time) {
+        Member member = memberManager.findMemberByUUID(uuid);
+        if (member instanceof Competitive_swimmer swimmer) {
+           CompetitionResult result = new CompetitionResult(competitionName, date, discipline, placement, time);
+           swimmer.addCompetitionResult(result);
+           changed = true;
+           return true;
         }
         return false;
     }
