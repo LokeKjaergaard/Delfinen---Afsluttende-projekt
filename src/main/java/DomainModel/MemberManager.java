@@ -1,5 +1,6 @@
 package DomainModel;
 
+import Membership.Member_type;
 import Users.ActivityType;
 import Users.Competitive_swimmer;
 import Users.Member;
@@ -82,6 +83,26 @@ public class MemberManager {
             }
         }
         return null;
+    }
+
+    public ArrayList<Member> getTeam(boolean isJuniorTeam) {
+        ArrayList<Member> resultList = new ArrayList<>();
+
+        if (isJuniorTeam) {
+            for (Member member : memberArrayList) {
+                if (member.getMemberType() == Member_type.JUNIOR) {
+                    resultList.add(member);
+                }
+            }
+        }
+        else {
+            for (Member member : memberArrayList) {
+                if (member.getMemberType() == Member_type.SENIOR) {
+                    resultList.add(member);
+                }
+            }
+        }
+        return resultList;
     }
 
 
