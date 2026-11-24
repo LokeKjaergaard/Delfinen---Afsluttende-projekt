@@ -5,6 +5,7 @@ import Activities.Discipline;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class Competitive_swimmer extends Member {
@@ -13,11 +14,21 @@ public class Competitive_swimmer extends Member {
     private Map<Discipline, BestTime> disciplineBestime = new HashMap<>();
     private ArrayList<CompetitionResult> competitionResults = new ArrayList<>();
 
+    private List<Discipline> disciplines;
 
-    public Competitive_swimmer(String name, LocalDate dateOfBirth, ActivityType activityType, int UUID) {
+    public Competitive_swimmer(String name, LocalDate dateOfBirth, ActivityType activityType,
+                               int UUID, List<Discipline> disciplines) {
         super(name, dateOfBirth, activityType, UUID);
+
+        if (disciplines == null || disciplines.isEmpty()) {
+            throw new IllegalArgumentException("A competitive swimmer must have at least one discipline");
+        }
+        this.disciplines = disciplines;
     }
 
+    public List<Discipline> getDisciplines() {
+        return disciplines;
+    }
     public BestTime getBestTime(Discipline discipline) {
         return disciplineBestime.get(discipline); // hent (null hvis ingen)
     }

@@ -10,6 +10,7 @@ import Users.Competitive_swimmer;
 
 import java.time.DateTimeException;
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Scanner;
 import java.util.concurrent.CancellationException;
 import java.util.ArrayList;
@@ -140,14 +141,15 @@ public class UserInterface {
             }
         }
     }
-public String formatMember(Member member) {
-String name = member.getName();
-int age = member.getAge(LocalDate.now());
-int uuid = member.getUUID();
-Member_type memberType = member.getMemberType();
-ActivityType activityType = member.getActivityType();
-return uuid + " | " + name + " | " + age + " | " + memberType + " | " + activityType;
-}
+
+    public String formatMember(Member member) {
+        String name = member.getName();
+        int age = member.getAge(LocalDate.now());
+        int uuid = member.getUUID();
+        Member_type memberType = member.getMemberType();
+        ActivityType activityType = member.getActivityType();
+        return uuid + " | " + name + " | " + age + " | " + memberType + " | " + activityType;
+    }
 
     private Discipline parseDiscipline(Scanner scanner) {
         while (true) {
@@ -175,10 +177,43 @@ return uuid + " | " + name + " | " + age + " | " + memberType + " | " + activity
         }
     }
 
+    private List<Discipline> parseDisciplines() {
+        List<Discipline> chosen = new ArrayList<>();
+        while (true) {
+            System.out.println();
+            System.out.println("Chosen so far: " + chosen);
+            System.out.println("1. Crawl");
+            System.out.println("2. Butterfly");
+            System.out.println("3. Backstroke");
+            System.out.println("4. Breaststroke");
+            System.out.println("0. Done");
+            int input = awaitInputInt(scanner, "Add a discipline:");
+
+            Discipline d = null;
+            switch (input) {
+                case 0 -> {
+                    if (chosen.isEmpty()) {
+                        System.out.println("A competitive swimmer needs at least one discipline.");
+                    } else {
+                        return chosen;
+                    }
+                }
+                case 1 -> d = Discipline.CRAWL;
+                case 2 -> d = Discipline.BUTTERFLY;
+                case 3 -> d = Discipline.BACKSTROKE;
+                case 4 -> d = Discipline.BREASTSTROKE;
+                default -> System.out.println("That's not a valid choice. Try again.");
+            }
+            if (d != null && !chosen.contains(d)) { // undgå dubletter
+                chosen.add(d);
+            }
+        }
+    }
+
     private static double awaitInputDouble(Scanner scanner, String text) {
         while (true) {
             try {
-                // replace(",", ".") så både 32,45 og 32.45 virker
+                // replace(",", ".") both comma and dot works now
                 return Double.parseDouble(awaitInput(scanner, text).trim().replace(",", "."));
             } catch (NumberFormatException e) {
                 System.out.println("That is not a number! Enter e.g. 32.45");
@@ -196,8 +231,15 @@ return uuid + " | " + name + " | " + age + " | " + memberType + " | " + activity
             String name = promptMemberName();
             LocalDate dateOfBirth = promptLocalDateFromString(1, "Date of birth");
             ActivityType activityType = parseActivityType();
+
+            // Kun konkurrencesvømmere skal vælge discipliner
+            List<Discipline> disciplines = new ArrayList<>();
+            if (activityType == ActivityType.COMPETITIVE) {
+                disciplines = parseDisciplines();
+            }
+
             // creates the member and adds them to the memberList
-            boolean result = controller.createMember(name, dateOfBirth, activityType);
+            boolean result = controller.createMember(name, dateOfBirth, activityType, disciplines);
             // result handling, prints a message if it fails or not for some unknown reason.
             if (result) {
                 System.out.println("Created the member");
@@ -215,7 +257,12 @@ return uuid + " | " + name + " | " + age + " | " + memberType + " | " + activity
             System.out.println("There are no members in the club.");
         } else {
             for (Member member : members) {
-                System.out.println(formatMember(member));
+                String line = formatMember(member);
+                // Konkurrencesvømmere får også deres discipliner vist
+                if (member instanceof Competitive_swimmer swimmer) {
+                    line += " | " + swimmer.getDisciplines();
+                }
+                System.out.println(line);
             }
         }
     }
@@ -249,7 +296,7 @@ return uuid + " | " + name + " | " + age + " | " + memberType + " | " + activity
 
         if (controller.addTime(uuid, discipline, time, date)) {
             System.out.println("Time registered");
-        } else System.out.println("No competitive swimmer with that UUID");
+        } else System.out.println("Time not registered (unknown UUID or not faster than current best time)");
     }
 
     private void registerCompetitionResult() {
