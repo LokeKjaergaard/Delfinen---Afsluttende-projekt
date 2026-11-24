@@ -249,4 +249,19 @@ return uuid + " | " + name + " | " + age + " | " + memberType + " | " + activity
             System.out.println("Time registered");
         } else System.out.println("No competitive swimmer with that UUID");
     }
+
+    private void registerCompetitionResult() {
+        System.out.println("Registering a new competition result...");
+        for (Member m : controller.getMemberArrayList()) {
+            if (m instanceof Competitive_swimmer) {
+                System.out.println(m.getUUID() + " - " + m.getName());
+            }
+        }
+        int uuid = awaitInputInt(scanner, "Swimmer UUID?");
+        String competitionName = awaitInput(scanner, "Competition name?");
+        LocalDate date = promptLocalDateFromString(1, "Competition date");
+        Discipline discipline = parseDiscipline(scanner);
+        int placement = awaitInputInt(scanner, "Competition placement?");
+        double time = awaitInputDouble(scanner, "Time in seconds (e.g. 32.45)?");
+    }
 }
