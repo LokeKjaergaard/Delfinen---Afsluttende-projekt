@@ -18,11 +18,6 @@ public class Competitive_swimmer extends Member {
         super(name, dateOfBirth, activityType, UUID);
     }
 
-    public void addTime(Discipline discipline, BestTime time) {
-        disciplineBestime.put(discipline, time ); // gem
-
-    }
-
     public BestTime getBestTime(Discipline discipline) {
         return disciplineBestime.get(discipline); // hent (null hvis ingen)
     }
@@ -33,6 +28,15 @@ public class Competitive_swimmer extends Member {
 
     public ArrayList<CompetitionResult> getCompetitionResults() {
         return competitionResults;
+    }
+
+    public void addTime(Discipline discipline, BestTime newTime) {
+        BestTime current = disciplineBestime.get(discipline); // den tid der er gemt nu (eller null)
+
+        // Gem kun hvis der ikke er en tid endnu, ELLER hvis den nye er hurtigere
+        if (current == null || newTime.getBestTime() < current.getBestTime()) {
+            disciplineBestime.put(discipline, newTime);
+        }
     }
 }
 
