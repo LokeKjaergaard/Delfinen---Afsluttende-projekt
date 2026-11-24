@@ -4,9 +4,7 @@ import Activities.Discipline;
 import DomainModel.Controller;
 import Membership.Member_type;
 
-import Users.ActivityType;
-import Users.Member;
-import Users.Competitive_swimmer;
+import Users.*;
 
 import java.time.DateTimeException;
 import java.time.LocalDate;
@@ -17,8 +15,39 @@ import java.util.ArrayList;
 public class UserInterface {
     private final Scanner scanner = new Scanner(System.in);
     private final Controller controller = new Controller();
+    private final UserManager userManager = new UserManager();
 
-    public void startUI() {
+    public void loginLoop() {
+        while (true) {
+            System.out.println();
+            System.out.println("Welcome");
+            System.out.println("Login");
+            String username = awaitInput(scanner, "Username:");
+            User user = userManager.findUserByUsername(username);
+            if (user == null) {
+                System.out.println("No user of that username exists.");
+                continue;
+            }
+            String password = awaitInput(scanner, "Enter password:");
+            boolean passwordSame = userManager.verifyPassword(user, password);
+            if (!passwordSame) {
+                System.out.println("Password incorrect");
+                continue;
+            }
+            switch (user.getAccess()) {
+                case ADMIN -> startAdminUI();
+                case CASHIER -> startCashierUI();
+                case TRAINER -> startTrainerUI();
+                case CHAIRMAN -> startChairmanUI();
+                default -> {
+                    return;
+                }
+            }
+        }
+    }
+
+
+    public void startAdminUI() {
         while (true) {
             printHelp();
             String input = awaitInput(scanner, "Please make your choice.").toLowerCase();
@@ -27,6 +56,48 @@ public class UserInterface {
                 case "members" -> listMembers();
                 case "add time" -> addTime();
                 case "fees" -> showAnnualFees();
+                case "exit" -> {
+                    return;
+                }
+                default -> System.out.println("Invalid action!");
+            }
+        }
+    }
+
+    public void startCashierUI() {
+        while (true) {
+            String input = awaitInput(scanner, "Please make your choice.").toLowerCase();
+            switch (input) {
+                case "fees" -> showAnnualFees();
+                case "exit" -> {
+                    return;
+                }
+                default -> System.out.println("Invalid action!");
+            }
+        }
+    }
+
+    public void startTrainerUI() {
+        while (true) {
+            String input = awaitInput(scanner, "Please make your choice.").toLowerCase();
+            switch (input) {
+                case "members" -> listMembers();
+                case "add time" -> addTime();
+                case "exit" -> {
+                    return;
+                }
+                default -> System.out.println("Invalid action!");
+            }
+        }
+    }
+
+    public void startChairmanUI() {
+        while (true) {
+            String input = awaitInput(scanner, "Please make your choice.").toLowerCase();
+            switch (input) {
+                case "create" -> createMember();
+                case "delete member" -> System.out.println("Unimplemented");
+                case "members" -> listMembers();
                 case "exit" -> {
                     return;
                 }
