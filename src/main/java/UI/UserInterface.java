@@ -27,6 +27,7 @@ public class UserInterface {
                 case "members" -> listMembers();
                 case "add time" -> addTime();
                 case "fees" -> showAnnualFees();
+                case "add competition result" -> registerCompetitionResult();
                 case "exit" -> {
                     return;
                 }
@@ -42,6 +43,7 @@ public class UserInterface {
         System.out.println("- create - creates a new member to the database.");
         System.out.println("- members - lists all current members");
         System.out.println("- add time - create a new compilation time, for a given discipline, into the database");
+        System.out.println("- add competition result - registers a competition result");
         System.out.println("- fees - lists all members and their annual membership fees");
         System.out.println("- exit - terminates the program");
     }
@@ -263,5 +265,9 @@ return uuid + " | " + name + " | " + age + " | " + memberType + " | " + activity
         Discipline discipline = parseDiscipline(scanner);
         int placement = awaitInputInt(scanner, "Competition placement?");
         double time = awaitInputDouble(scanner, "Time in seconds (e.g. 32.45)?");
+
+        if (controller.addCompetitionResult(uuid,competitionName,date,discipline,placement,time)) {
+            System.out.println("Competition result registered!");
+        } else System.out.println("No competitive swimmer with that UUID");
     }
 }
