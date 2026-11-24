@@ -1,17 +1,17 @@
 package Users;
 
-import java.util.HashMap;
-import java.util.Map;
 import Activities.Discipline;
 
 import java.time.LocalDate;
-
-
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public class Competitive_swimmer extends Member {
 
 
     private Map<Discipline, BestTime> disciplineBestime = new HashMap<>();
+    private ArrayList<CompetitionResult> competitionResults = new ArrayList<>();
 
 
     public Competitive_swimmer(String name, LocalDate dateOfBirth, ActivityType activityType, int UUID) {
@@ -27,10 +27,14 @@ public class Competitive_swimmer extends Member {
         return disciplineBestime.get(discipline); // hent (null hvis ingen)
     }
 
-
-
-
+    public void addCompetitionResult(CompetitionResult result) {
+        competitionResults.add(result);
     }
+
+    public ArrayList<CompetitionResult> getCompetitionResults() {
+        return competitionResults;
+    }
+}
 
 
 
