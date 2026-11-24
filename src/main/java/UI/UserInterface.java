@@ -26,6 +26,7 @@ public class UserInterface {
                 case "create" -> createMember();
                 case "members" -> listMembers();
                 case "add time" -> addTime();
+                case "fees" -> showAnnualFees();
                 case "exit" -> {
                     return;
                 }
@@ -41,6 +42,7 @@ public class UserInterface {
         System.out.println("- create - creates a new member to the database.");
         System.out.println("- members - lists all current members");
         System.out.println("- add time - create a new compilation time, for a given discipline, into the database");
+        System.out.println("- fees - lists all members and their annual membership fees");
         System.out.println("- exit - terminates the program");
     }
 
@@ -212,6 +214,21 @@ return uuid + " | " + name + " | " + age + " | " + memberType + " | " + activity
         } else {
             for (Member member : members) {
                 System.out.println(formatMember(member));
+            }
+        }
+    }
+
+    private void showAnnualFees() {
+        ArrayList<Member> members = controller.getMemberArrayList();
+        if (members.isEmpty()) {
+            System.out.println("There are no members in the club.");
+        } else {
+            System.out.println("Annual membership fees");
+
+            for (Member member : members) {
+                int fee = member.calculateFee(LocalDate.now());
+
+                System.out.println(member.getUUID() + " | " + member.getName() + " | " + fee + " kr.");
             }
         }
     }

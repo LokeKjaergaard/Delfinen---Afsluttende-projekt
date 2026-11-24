@@ -18,16 +18,16 @@ public class BestTime {
 
    }
 
-    public void SetBestTime(Discipline discipline){
+    public void SetBestTime(){
 
     }
 
-    public double getBestTime(Discipline discipline){
+    public double getBestTime(){
 
         return bestTime;
     }
     //Todo ligenu med den her logik så kan man kun indtaste dato på selve dagen. og på det aktuelle tidspunkt skal evt ændres senere.
-    public LocalDate setDate(){
+    public LocalDate getDate(){
 
         return date;
     }
