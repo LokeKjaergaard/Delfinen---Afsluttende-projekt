@@ -66,9 +66,18 @@ public class MemberManager {
 
     }
 
-    public Member findMember(int uuid) {
+    public Member findMemberByUUID(int uuid) {
         for (Member member : memberArrayList) {
             if (member.getUUID() == uuid) {
+                return member;
+            }
+        }
+        return null;
+    }
+
+    public Member findMemberByName(String name) {
+        for (Member member : memberArrayList) {
+            if (member.getName().equalsIgnoreCase(name)) {
                 return member;
             }
         }

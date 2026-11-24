@@ -39,7 +39,7 @@ public class Controller {
         return result;
     }
     public boolean addTime(int uuid, Discipline discipline, double time, LocalDate date) {
-        Member member = memberManager.findMember(uuid);
+        Member member = memberManager.findMemberByUUID(uuid);
         if (member instanceof Competitive_swimmer swimmer) {
             swimmer.addTime(discipline, new BestTime(time, date));
             changed = true;
