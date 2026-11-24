@@ -10,6 +10,9 @@ public class CompetitionResult {
     private double time;
 
     public CompetitionResult(String competitionName, LocalDate date, Discipline discipline, int placement, double time) {
+        if (placement <= 0) {
+            throw new IllegalArgumentException("Placement must be a positive number!");
+        }
         this.competitionName = competitionName;
         this.date = date;
         this.discipline = discipline;
