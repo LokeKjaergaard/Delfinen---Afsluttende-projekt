@@ -27,7 +27,7 @@ public class BestTime {
         return bestTime;
     }
     //Todo ligenu med den her logik så kan man kun indtaste dato på selve dagen. og på det aktuelle tidspunkt skal evt ændres senere.
-    public LocalDate setDate(){
+    public LocalDate getDate(){
 
         return date;
     }
