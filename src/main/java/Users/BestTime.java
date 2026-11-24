@@ -18,11 +18,11 @@ public class BestTime {
 
    }
 
-    public void SetBestTime(Discipline discipline){
+    public void SetBestTime(){
 
     }
 
-    public double getBestTime(Discipline discipline){
+    public double getBestTime(){
 
         return bestTime;
     }
