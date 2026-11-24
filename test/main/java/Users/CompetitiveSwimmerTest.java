@@ -4,6 +4,8 @@ import Activities.Discipline;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -14,7 +16,7 @@ class CompetitiveSwimmerTest {
     @BeforeEach
     void setUp() {
         // Kører før HVER test, så alle tests starter med en "frisk" svømmer
-        swimmer = new Competitive_swimmer("Anna", LocalDate.of(2005, 3, 14), ActivityType.COMPETITIVE, 1);
+        swimmer = new Competitive_swimmer("Anna", LocalDate.of(2005, 3, 14), ActivityType.COMPETITIVE, 1, List.of(Discipline.CRAWL));
     }
 
     @Test
@@ -63,5 +65,15 @@ class CompetitiveSwimmerTest {
 
         // Butterfly skal stadig være tom
         assertNull(swimmer.getBestTime(Discipline.BUTTERFLY));
+    }
+
+    @Test
+    void createSwimmer_withNoDisciplines_throwsException() {
+        List<Discipline> noDisciplines = new ArrayList<>();
+
+        assertThrows(IllegalArgumentException.class, () ->
+                new Competitive_swimmer("Anna", LocalDate.of(2005, 3, 14),
+                        ActivityType.COMPETITIVE, 1, noDisciplines)
+        );
     }
 }

@@ -1,11 +1,13 @@
 package DomainModel;
 
+import Activities.Discipline;
 import Users.ActivityType;
 import Users.Competitive_swimmer;
 import Users.Member;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 public class MemberManager {
@@ -30,12 +32,11 @@ public class MemberManager {
     /**
      * Creates a new member, adds them to the memberArrayList and then remembers the UUID so it won't be used in the future.
      */
-    public boolean createMember(String name, LocalDate dateOfBirth, ActivityType activityType) {
+    public boolean createMember(String name, LocalDate dateOfBirth, ActivityType activityType, List<Discipline> disciplines) {
         int uuid = generateNextUUID();
         Member member;
-        Competitive_swimmer Competitive_swimmer;
         if (activityType == ActivityType.COMPETITIVE) {
-            member = new Competitive_swimmer(name, dateOfBirth, activityType, uuid);
+            member = new Competitive_swimmer(name, dateOfBirth, activityType, uuid, disciplines);
 
         } else {
             member = new Member(name, dateOfBirth, activityType, uuid);

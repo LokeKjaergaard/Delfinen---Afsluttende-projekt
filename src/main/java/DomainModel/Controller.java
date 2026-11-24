@@ -9,6 +9,7 @@ import Users.Member;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.List;
 
 public class Controller {
     private final FileHandler fileHandler = new FileHandler("temp.csv");
@@ -23,8 +24,8 @@ public class Controller {
         return memberManager.getMemberArrayList();
     }
 
-    public boolean createMember(String name, LocalDate dateOfBirth, ActivityType activityType) {
-        boolean result = memberManager.createMember(name, dateOfBirth, activityType);
+    public boolean createMember(String name, LocalDate dateOfBirth, ActivityType activityType, List<Discipline> disciplines) {
+        boolean result = memberManager.createMember(name, dateOfBirth, activityType, disciplines);
         if (result) {
             changed = true;
         }

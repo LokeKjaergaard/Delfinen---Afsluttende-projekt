@@ -1,11 +1,13 @@
 package DomainModel;
 
+import Activities.Discipline;
 import Users.ActivityType;
 import Users.Member;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDate;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -19,7 +21,7 @@ class MemberManagerTest {
 
     @Test
     void testCreation() {
-        boolean result = memberManager.createMember("John", LocalDate.parse("2020-09-09"), ActivityType.PASSIVE);
+        boolean result = memberManager.createMember("John", LocalDate.parse("2020-09-09"), ActivityType.PASSIVE,  List.of(Discipline.CRAWL));
         assertTrue(result);
         assertFalse(memberManager.getMemberArrayList().isEmpty());
         Member member = memberManager.getMemberArrayList().getFirst();
@@ -42,8 +44,8 @@ class MemberManagerTest {
 
     @Test
     void testFindMemberUUID() {
-        memberManager.createMember("John", LocalDate.parse("2020-09-09"), ActivityType.PASSIVE);
-        memberManager.createMember("Jane", LocalDate.parse("2008-07-01"), ActivityType.COMPETITIVE);
+        memberManager.createMember("John", LocalDate.parse("2020-09-09"), ActivityType.PASSIVE,  List.of(Discipline.CRAWL));
+        memberManager.createMember("Jane", LocalDate.parse("2008-07-01"), ActivityType.COMPETITIVE,  List.of(Discipline.CRAWL));
 
         int janeUUID = memberManager.getMemberArrayList().get(1).getUUID();
 
@@ -56,8 +58,8 @@ class MemberManagerTest {
 
     @Test
     void testFindMemberByName() {
-        memberManager.createMember("John", LocalDate.parse("2020-09-09"), ActivityType.PASSIVE);
-        memberManager.createMember("Jane", LocalDate.parse("2008-07-01"), ActivityType.COMPETITIVE);
+        memberManager.createMember("John", LocalDate.parse("2020-09-09"), ActivityType.PASSIVE,  List.of(Discipline.CRAWL));
+        memberManager.createMember("Jane", LocalDate.parse("2008-07-01"), ActivityType.COMPETITIVE,  List.of(Discipline.CRAWL));
 
         Member result = memberManager.findMemberByName("John");
 
