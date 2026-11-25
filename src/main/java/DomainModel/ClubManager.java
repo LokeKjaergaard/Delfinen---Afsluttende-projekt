@@ -1,5 +1,6 @@
 package DomainModel;
 
+import Activities.Discipline;
 import Membership.Member_type;
 import Users.ActivityType;
 import Users.Competitive_swimmer;
@@ -9,10 +10,13 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Random;
 
-public class MemberManager {
+public class ClubManager {
     private final ArrayList<Member> memberArrayList = new ArrayList<>();
     // the UUID list tracks all used UUIDs, in case we need to track it.
     private final ArrayList<Integer> UUIDArrayList = new ArrayList<>();
+    private final ArrayList<Team> teams = new ArrayList<>();
+
+    private int nextTeamNum = 0;
 
     public ArrayList<Member> getCompetitiveSwimmers(){
         ArrayList<Member> competitiveSwimmers = new ArrayList<>();
@@ -43,9 +47,6 @@ public class MemberManager {
         }
         return memberArrayList.add(member);
     }
-
-
-
 
     public boolean deleteMember(Member member) {
         return memberArrayList.remove(member);
@@ -85,7 +86,21 @@ public class MemberManager {
         return null;
     }
 
-    public ArrayList<Member> getTeam(boolean isJuniorTeam) {
+    public Team getTeamByNum(int number) {
+        return teams.get(number);
+    }
+
+    public boolean createTeam(ArrayList<Member> members, Member trainer, Member_type memberType, ArrayList<Discipline> disciplines) {
+        boolean result = teams.add(new Team(nextTeamNum, members, trainer, memberType, disciplines));
+        nextTeamNum++;
+        return result;
+    }
+
+    public boolean deleteTeam(Team team) {
+        return teams.remove(team);
+    }
+
+    public ArrayList<Member> getAllMembersByMemberType(boolean isJuniorTeam) {
         ArrayList<Member> resultList = new ArrayList<>();
 
         if (isJuniorTeam) {

@@ -1,5 +1,6 @@
 package Users;
 
+import DomainModel.Team;
 import Membership.Member_type;
 
 import java.time.DateTimeException;
@@ -13,6 +14,7 @@ public class Member {
     private final int UUID;
     private ActivityType activityType;
     private Member_type memberType;
+    private Team assignedTeam;
 
     //Annual membership fees
     private static final int PASSIVE_FEE = 500;
@@ -53,6 +55,10 @@ public class Member {
 
     public Member_type getMemberType() {
         return memberType;
+    }
+
+    public Team getAssignedTeam() {
+        return assignedTeam;
     }
 
     // Calculate annual fee
@@ -115,5 +121,9 @@ public class Member {
             );
         }
         this.activityType = activityType;
+    }
+
+    public void setAssignedTeam(Team assignedTeam) {
+        this.assignedTeam = assignedTeam;
     }
 }
