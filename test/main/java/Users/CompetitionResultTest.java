@@ -1,8 +1,7 @@
-package Users;
+package main.java.Users;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 
 import Users.CompetitionResult;
@@ -16,7 +15,7 @@ public class CompetitionResultTest {
 
     @Test
     void testAddCompetitionResult() {
-    Competitive_swimmer swimmer = new Competitive_swimmer("Test Swimmer", LocalDate.of(2000,1,1), ActivityType.COMPETITIVE,12345);
+    Competitive_swimmer swimmer = new Competitive_swimmer("Test Swimmer", LocalDate.of(2000,1,1), ActivityType.COMPETITIVE,12345, List.of(Discipline.CRAWL));
     CompetitionResult result = new CompetitionResult("EK´s Svømmestævne", LocalDate.of(2026,11,20), Discipline.CRAWL, 2, 30.30);
     swimmer.addCompetitionResult(result);
 
