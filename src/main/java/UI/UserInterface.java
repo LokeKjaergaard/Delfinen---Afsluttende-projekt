@@ -3,17 +3,16 @@ package UI;
 import Activities.Discipline;
 import DomainModel.Controller;
 import Membership.Member_type;
-
 import Users.ActivityType;
-import Users.Member;
 import Users.Competitive_swimmer;
+import Users.Member;
 
 import java.time.DateTimeException;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 import java.util.concurrent.CancellationException;
-import java.util.ArrayList;
 
 public class UserInterface {
     private final Scanner scanner = new Scanner(System.in);
@@ -306,19 +305,26 @@ public class UserInterface {
                 System.out.println(m.getUUID() + " - " + m.getName());
             }
         }
+
         int uuid = awaitInputInt(scanner, "Swimmer UUID?");
         String competitionName = awaitInput(scanner, "Competition name?");
         LocalDate date = promptLocalDateFromString(1, "Competition date");
         Discipline discipline = parseDiscipline(scanner);
         int placement = awaitInputInt(scanner, "Competition placement?");
+
         while (placement <= 0) {
             System.out.println("Placement must be a positive number!");
             placement = awaitInputInt(scanner, "Competition placement?");
         }
         double time = awaitInputDouble(scanner, "Time in seconds (e.g. 32.45)?");
-
-        if (controller.addCompetitionResult(uuid,competitionName,date,discipline,placement,time)) {
-            System.out.println("Competition result registered!");
-        } else System.out.println("No competitive swimmer with that UUID");
+        try {
+            if (controller.addCompetitionResult(uuid, competitionName, date, discipline, placement, time)) {
+                System.out.println("Competition result registered!");
+            } else {
+                System.out.println("No competitive swimmer with that UUID");
+            }
+        } catch (IllegalArgumentException e) {
+            System.out.println(e.getMessage());
+        }
     }
 }
