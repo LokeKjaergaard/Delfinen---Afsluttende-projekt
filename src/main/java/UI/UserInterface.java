@@ -311,6 +311,10 @@ public class UserInterface {
         LocalDate date = promptLocalDateFromString(1, "Competition date");
         Discipline discipline = parseDiscipline(scanner);
         int placement = awaitInputInt(scanner, "Competition placement?");
+        while (placement <= 0) {
+            System.out.println("Placement must be a positive number!");
+            placement = awaitInputInt(scanner, "Competition placement?");
+        }
         double time = awaitInputDouble(scanner, "Time in seconds (e.g. 32.45)?");
 
         if (controller.addCompetitionResult(uuid,competitionName,date,discipline,placement,time)) {
