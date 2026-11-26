@@ -1,6 +1,7 @@
 package Users;
 
 import Membership.Member_type;
+import Membership.Payments;
 
 import java.time.DateTimeException;
 import java.time.LocalDate;
@@ -13,6 +14,7 @@ public class Member {
     private final int UUID;
     private ActivityType activityType;
     private Member_type memberType;
+    private final Payments payments = new Payments();
 
     //Annual membership fees
     private static final int PASSIVE_FEE = 500;
@@ -27,6 +29,7 @@ public class Member {
         this.activityType = activityType;
         setMemberType();
         this.UUID = UUID;
+        payments.addMissingPayment(LocalDate.now().getYear(), calculateFee(LocalDate.now()));
     }
 
     // getters
@@ -54,6 +57,9 @@ public class Member {
     public Member_type getMemberType() {
         return memberType;
     }
+
+    public Payments getPayments() {return payments;}
+
 
     // Calculate annual fee
     public int calculateFee(LocalDate referenceDate) {
