@@ -61,6 +61,13 @@ public class Member {
         return assignedTeam;
     }
 
+    public boolean isJunior() {
+        return switch (memberType) {
+            case JUNIOR -> true;
+            case SENIOR -> false;
+        };
+    }
+
     // Calculate annual fee
     public int calculateFee(LocalDate referenceDate) {
         if (activityType == ActivityType.PASSIVE) {

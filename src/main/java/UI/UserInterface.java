@@ -2,8 +2,8 @@ package UI;
 
 import Activities.Discipline;
 import DomainModel.Controller;
+import DomainModel.Team;
 import Membership.Member_type;
-
 import Users.ActivityType;
 import Users.Member;
 import Users.Competitive_swimmer;
@@ -27,6 +27,7 @@ public class UserInterface {
                 case "members" -> listMembers();
                 case "add time" -> addTime();
                 case "fees" -> showAnnualFees();
+                case "show teams" -> showTeams();
                 case "exit" -> {
                     return;
                 }
@@ -43,6 +44,8 @@ public class UserInterface {
         System.out.println("- members - lists all current members");
         System.out.println("- add time - create a new compilation time, for a given discipline, into the database");
         System.out.println("- fees - lists all members and their annual membership fees");
+        System.out.println("- show teams - prints all Members of either junior or senior");
+        System.out.println("- show teams - prints all Members of a specified team");
         System.out.println("- exit - terminates the program");
     }
 
@@ -138,14 +141,31 @@ public class UserInterface {
             }
         }
     }
-public String formatMember(Member member) {
-String name = member.getName();
-int age = member.getAge(LocalDate.now());
-int uuid = member.getUUID();
-Member_type memberType = member.getMemberType();
-ActivityType activityType = member.getActivityType();
-return uuid + " | " + name + " | " + age + " | " + memberType + " | " + activityType;
-}
+
+    private static boolean awaitInputBool(Scanner scanner, String text) {
+        while (true) {
+            String input = awaitInput(scanner, text + " (type yes/no)").toLowerCase();
+
+            switch (input) {
+                case "yes" -> {
+                    return true;
+                }
+                case "no" -> {
+                    return false;
+                }
+                default -> System.out.println("No a valid choice! (Only yes/no is allowed)");
+            }
+        }
+    }
+
+    public String formatMember(Member member) {
+        String name = member.getName();
+        int age = member.getAge(LocalDate.now());
+        int uuid = member.getUUID();
+        Member_type memberType = member.getMemberType();
+        ActivityType activityType = member.getActivityType();
+        return uuid + " | " + name + " | " + age + " | " + memberType + " | " + activityType;
+    }
 
     private Discipline parseDiscipline(Scanner scanner) {
         while (true) {
@@ -248,5 +268,58 @@ return uuid + " | " + name + " | " + age + " | " + memberType + " | " + activity
         if (controller.addTime(uuid, discipline, time, date)) {
             System.out.println("Time registered");
         } else System.out.println("No competitive swimmer with that UUID");
+    }
+
+    //todo: prase teams instead of members
+    private void showTeams() {
+        ArrayList<Member> teams = controller.getMemberArrayList();
+        System.out.println("Showing teams...");
+        if (teams.isEmpty()) {
+            System.out.println("There's no teams to display.");
+            return;
+        }
+        System.out.println("no - Senior only");
+        System.out.println("yes - Junior only");
+        boolean sortByJunior = awaitInputBool(scanner, "Show senior or junior teams?");
+        printMembersByMemberType(sortByJunior);
+    }
+
+    private void printTeams(boolean isJunior, ArrayList<Team> teamArrayList) {
+        //todo
+        if (teamArrayList.isEmpty()) {
+            System.out.println("There's no teams to display.");
+            return;
+        }
+
+        Member_type memberType;
+
+        if (isJunior) {
+            memberType = Member_type.JUNIOR;
+        } else {
+            memberType = Member_type.SENIOR;
+        }
+
+        for (Team team : teamArrayList) {
+            if (team.getTeamMemberType() == memberType) {
+                if (team.getTeamName().isEmpty()) {
+                    System.out.println(team.getTeamNumber() + " | Trainer: " + team.getTeamTrainer().getName() + " | Team member(s): " + team.getAllTeamMembers().size());
+                    continue;
+                }
+                System.out.println(team.getTeamNumber() + " | Name: " + team.getTeamName() + "| Trainer: " + team.getTeamTrainer().getName() + " | Team member(s): " + team.getAllTeamMembers().size());
+            }
+        }
+    }
+
+    private void printMembersByMemberType(boolean isJunior) {
+        ArrayList<Member> members = controller.getMemberArrayList();
+        if (members.isEmpty()) {
+            System.out.println("There's no member(s) to display.");
+            return;
+        }
+        for (Member member : members) {
+            if (member.isJunior() == isJunior) {
+                System.out.println(formatMember(member));
+            }
+        }
     }
 }

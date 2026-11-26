@@ -15,12 +15,11 @@ public class Team {
     private Member_type memberType;
     private ArrayList<Discipline> disciplines;
 
-    public Team(int teamNumber, ArrayList<Member> members, Member trainer, Member_type memberType, ArrayList<Discipline> disciplines) {
+    public Team(int teamNumber, ArrayList<Member> members, Member trainer, Member_type memberType) {
         setTeamNumber(teamNumber);
         setTeamMembers(members);
         setTeamTrainer(trainer);
         setMemberType(memberType);
-        setDisciplines(disciplines);
     }
 
     public int getTeamNumber() {
@@ -63,11 +62,6 @@ public class Team {
 
     // private: we don't want people to be able to replace the completely change the member list after creation.
     private void setTeamMembers(ArrayList<Member> members) {
-        if (members.isEmpty()) {
-            throw new IllegalArgumentException(
-                    "The team cannot be empty!"
-            );
-        }
         this.members = members;
     }
 

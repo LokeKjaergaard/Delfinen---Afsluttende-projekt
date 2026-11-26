@@ -2,6 +2,7 @@ package DomainModel;
 
 import Activities.Discipline;
 import DataSource.FileHandler;
+import Membership.Member_type;
 import Users.ActivityType;
 import Users.BestTime;
 import Users.Competitive_swimmer;
@@ -46,5 +47,13 @@ public class Controller {
             return true;
         }
         return false;
+    }
+
+    public ArrayList<Team> getTeams() {
+        return clubManager.getTeams();
+    }
+
+    public boolean createTeam(ArrayList<Member> members, Member trainer, Member_type memberType) {
+        return clubManager.createTeam(members, trainer, memberType);
     }
 }

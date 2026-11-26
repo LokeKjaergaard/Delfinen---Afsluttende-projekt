@@ -77,6 +77,10 @@ public class ClubManager {
         return null;
     }
 
+    public ArrayList<Team> getTeams() {
+        return teams;
+    }
+
     public Member findMemberByName(String name) {
         for (Member member : memberArrayList) {
             if (member.getName().equalsIgnoreCase(name)) {
@@ -90,8 +94,8 @@ public class ClubManager {
         return teams.get(number);
     }
 
-    public boolean createTeam(ArrayList<Member> members, Member trainer, Member_type memberType, ArrayList<Discipline> disciplines) {
-        boolean result = teams.add(new Team(nextTeamNum, members, trainer, memberType, disciplines));
+    public boolean createTeam(ArrayList<Member> members, Member trainer, Member_type memberType) {
+        boolean result = teams.add(new Team(nextTeamNum, members, trainer, memberType ));
         nextTeamNum++;
         return result;
     }
