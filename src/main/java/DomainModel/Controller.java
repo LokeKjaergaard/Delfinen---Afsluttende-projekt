@@ -68,4 +68,17 @@ public class Controller {
         }
         return false;
     }
+
+
+    public int registerPayment(int uuid, int paymentAmount) {
+        Member member = memberManager.findMemberByUUID(uuid);
+
+        if (member == null) {
+            throw new IllegalArgumentException("Member does not exist");
+        }
+
+        int surplus = member.getPayments().registerPayment(paymentAmount);
+        changed = true;
+        return surplus;
+    }
 }

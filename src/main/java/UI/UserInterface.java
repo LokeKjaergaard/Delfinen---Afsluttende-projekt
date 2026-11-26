@@ -332,14 +332,28 @@ public class UserInterface {
         }
     }
 
-    private void payOffDebt(){
 
+        private void registerPayment() {
+            System.out.println("Registering a payment...");
 
+            // 1. Vis medlemmer og hvad de skylder
+            for (Member m : controller.getMemberArrayList()) {
+                System.out.println(m.getUUID() + " - " + m.getName() + " - owes " + m.getPayments().getTotalOwed() + " kr.");
+            }
 
+            // 2. Spørg kassereren
+            int uuid = awaitInputInt(scanner, "Input user ID");
+            int amount = awaitInputInt(scanner, "Input payment amount");
 
-
-
-    }
+            // 3. Kald controlleren og håndtér resultatet
+            try {
+                int surplus = controller.registerPayment(uuid, amount);
+                // skriv en besked: betaling registreret
+                // hvis surplus er større end 0: skriv hvor meget medlemmet skal have tilbage
+            } catch (IllegalArgumentException e) {
+                System.out.println(e.getMessage());
+            }
+        }
 
 
 
