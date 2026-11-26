@@ -1,6 +1,7 @@
 package DomainModel;
 
 import Activities.Discipline;
+import Membership.Member_type;
 import Users.ActivityType;
 import Users.Competitive_swimmer;
 import Users.Member;
@@ -8,6 +9,7 @@ import Users.Member;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 public class ClubManager {

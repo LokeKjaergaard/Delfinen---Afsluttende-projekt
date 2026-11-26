@@ -26,8 +26,8 @@ public class Controller {
         return clubManager.getMemberArrayList();
     }
 
-    public boolean createMember(String name, LocalDate dateOfBirth, ActivityType activityType) {
-        boolean result = clubManager.createMember(name, dateOfBirth, activityType);
+    public boolean createMember(String name, LocalDate dateOfBirth, ActivityType activityType, List<Discipline> disciplines) {
+        boolean result = clubManager.createMember(name, dateOfBirth, activityType, disciplines);
         if (result) {
             changed = true;
         }
