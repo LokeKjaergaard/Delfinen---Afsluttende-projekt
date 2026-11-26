@@ -50,9 +50,17 @@ public class Controller {
         return false;
     }
 
+    public boolean isCompetitiveSwimmer(int uuid) {
+        Member member = memberManager.findMemberByUUID(uuid);
+        return member instanceof Competitive_swimmer;
+    }
+
     public boolean addCompetitionResult(int uuid, String competitionName, LocalDate date, Discipline discipline, int placement, double time) {
         Member member = memberManager.findMemberByUUID(uuid);
         if (member instanceof Competitive_swimmer swimmer) {
+            if (!swimmer.getDisciplines().contains(discipline)) {
+                throw new IllegalArgumentException("The swimmer is not registered for this dislipline!");
+            }
            CompetitionResult result = new CompetitionResult(competitionName, date, discipline, placement, time);
            swimmer.addCompetitionResult(result);
            changed = true;

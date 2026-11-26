@@ -307,6 +307,10 @@ public class UserInterface {
         }
 
         int uuid = awaitInputInt(scanner, "Swimmer UUID?");
+        if (!controller.isCompetitiveSwimmer(uuid)) {
+            System.out.println("No competitive swimmer with that UUID");
+            return;
+        }
         String competitionName = awaitInput(scanner, "Competition name?");
         LocalDate date = promptLocalDateFromString(1, "Competition date");
         Discipline discipline = parseDiscipline(scanner);
