@@ -45,7 +45,7 @@ public class UserInterface {
         System.out.println("- add time - create a new compilation time, for a given discipline, into the database");
         System.out.println("- fees - lists all members and their annual membership fees");
         System.out.println("- show teams - prints all Members of either junior or senior");
-        System.out.println("- show teams - prints all Members of a specified team");
+        //System.out.println("- show teams - prints all Members of a specified team");
         System.out.println("- exit - terminates the program");
     }
 
