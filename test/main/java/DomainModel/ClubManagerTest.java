@@ -11,20 +11,20 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class MemberManagerTest {
-    private MemberManager memberManager;
+class ClubManagerTest {
+    private ClubManager clubManager;
 
     @BeforeEach
     void setup() {
-        memberManager = new MemberManager();
+        clubManager = new ClubManager();
     }
 
     @Test
     void testCreation() {
-        boolean result = memberManager.createMember("John", LocalDate.parse("2020-09-09"), ActivityType.PASSIVE,  List.of(Discipline.CRAWL));
+        boolean result = clubManager.createMember("John", LocalDate.parse("2020-09-09"), ActivityType.PASSIVE);
         assertTrue(result);
-        assertFalse(memberManager.getMemberArrayList().isEmpty());
-        Member member = memberManager.getMemberArrayList().getFirst();
+        assertFalse(clubManager.getMemberArrayList().isEmpty());
+        Member member = clubManager.getMemberArrayList().getFirst();
         assertEquals("John", member.getName());
         assertEquals(LocalDate.parse("2020-09-09"), member.getDateOfBirth());
         assertEquals(ActivityType.PASSIVE, member.getActivityType());
@@ -34,22 +34,22 @@ class MemberManagerTest {
     @Test
     void testDeletion() {
         Member member = new Member("John", LocalDate.parse("2020-09-09"), ActivityType.PASSIVE, 0);
-        memberManager.getMemberArrayList().add(member);
-        assertFalse(memberManager.getMemberArrayList().isEmpty());
+        clubManager.getMemberArrayList().add(member);
+        assertFalse(clubManager.getMemberArrayList().isEmpty());
 
-        boolean result = memberManager.deleteMember(member);
+        boolean result = clubManager.deleteMember(member);
         assertTrue(result);
-        assertTrue(memberManager.getMemberArrayList().isEmpty());
+        assertTrue(clubManager.getMemberArrayList().isEmpty());
     }
 
     @Test
     void testFindMemberUUID() {
-        memberManager.createMember("John", LocalDate.parse("2020-09-09"), ActivityType.PASSIVE,  List.of(Discipline.CRAWL));
-        memberManager.createMember("Jane", LocalDate.parse("2008-07-01"), ActivityType.COMPETITIVE,  List.of(Discipline.CRAWL));
+        clubManager.createMember("John", LocalDate.parse("2020-09-09"), ActivityType.PASSIVE,  List.of(Discipline.CRAWL));
+        clubManager.createMember("Jane", LocalDate.parse("2008-07-01"), ActivityType.COMPETITIVE,  List.of(Discipline.CRAWL));
 
-        int janeUUID = memberManager.getMemberArrayList().get(1).getUUID();
+        int janeUUID = clubManager.getMemberArrayList().get(1).getUUID();
 
-        Member result = memberManager.findMemberByUUID(janeUUID);
+        Member result = clubManager.findMemberByUUID(janeUUID);
         assertNotNull(result);
         assertEquals("Jane", result.getName());
         assertEquals(LocalDate.parse("2008-07-01"), result.getDateOfBirth());
@@ -58,8 +58,8 @@ class MemberManagerTest {
 
     @Test
     void testFindMemberByName() {
-        memberManager.createMember("John", LocalDate.parse("2020-09-09"), ActivityType.PASSIVE,  List.of(Discipline.CRAWL));
-        memberManager.createMember("Jane", LocalDate.parse("2008-07-01"), ActivityType.COMPETITIVE,  List.of(Discipline.CRAWL));
+        memberManager.createMember("John", LocalDate.parse("2020-09-09"), ActivityType.PASSIVE);
+        memberManager.createMember("Jane", LocalDate.parse("2008-07-01"), ActivityType.COMPETITIVE);
 
         Member result = memberManager.findMemberByName("John");
 

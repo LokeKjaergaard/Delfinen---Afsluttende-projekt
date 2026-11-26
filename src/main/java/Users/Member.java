@@ -1,5 +1,6 @@
 package Users;
 
+import DomainModel.Team;
 import Membership.Member_type;
 import Membership.Payments;
 
@@ -14,6 +15,7 @@ public class Member {
     private final int UUID;
     private ActivityType activityType;
     private Member_type memberType;
+    private Team assignedTeam;
     private final Payments payments = new Payments();
 
     //Annual membership fees
@@ -60,6 +62,17 @@ public class Member {
 
     public Payments getPayments() {return payments;}
 
+
+    public Team getAssignedTeam() {
+        return assignedTeam;
+    }
+
+    public boolean isJunior() {
+        return switch (memberType) {
+            case JUNIOR -> true;
+            case SENIOR -> false;
+        };
+    }
 
     // Calculate annual fee
     public int calculateFee(LocalDate referenceDate) {
@@ -121,5 +134,9 @@ public class Member {
             );
         }
         this.activityType = activityType;
+    }
+
+    public void setAssignedTeam(Team assignedTeam) {
+        this.assignedTeam = assignedTeam;
     }
 }
