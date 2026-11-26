@@ -5,14 +5,15 @@ import DomainModel.Controller;
 import DomainModel.Team;
 import Membership.Member_type;
 import Users.ActivityType;
-import Users.Member;
 import Users.Competitive_swimmer;
+import Users.Member;
 
 import java.time.DateTimeException;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 import java.util.concurrent.CancellationException;
-import java.util.ArrayList;
 
 public class UserInterface {
     private final Scanner scanner = new Scanner(System.in);
@@ -27,6 +28,7 @@ public class UserInterface {
                 case "members" -> listMembers();
                 case "add time" -> addTime();
                 case "fees" -> showAnnualFees();
+                case "add competition result" -> registerCompetitionResult();
                 case "show teams" -> showTeams();
                 case "exit" -> {
                     return;
@@ -44,8 +46,6 @@ public class UserInterface {
         System.out.println("- members - lists all current members");
         System.out.println("- add time - create a new compilation time, for a given discipline, into the database");
         System.out.println("- fees - lists all members and their annual membership fees");
-        System.out.println("- show teams - prints all Members of either junior or senior");
-        //System.out.println("- show teams - prints all Members of a specified team");
         System.out.println("- exit - terminates the program");
     }
 
@@ -193,10 +193,43 @@ public class UserInterface {
         }
     }
 
+    private List<Discipline> parseDisciplines() {
+        List<Discipline> chosen = new ArrayList<>();
+        while (true) {
+            System.out.println();
+            System.out.println("Chosen so far: " + chosen);
+            System.out.println("1. Crawl");
+            System.out.println("2. Butterfly");
+            System.out.println("3. Backstroke");
+            System.out.println("4. Breaststroke");
+            System.out.println("0. Done");
+            int input = awaitInputInt(scanner, "Add a discipline:");
+
+            Discipline d = null;
+            switch (input) {
+                case 0 -> {
+                    if (chosen.isEmpty()) {
+                        System.out.println("A competitive swimmer needs at least one discipline.");
+                    } else {
+                        return chosen;
+                    }
+                }
+                case 1 -> d = Discipline.CRAWL;
+                case 2 -> d = Discipline.BUTTERFLY;
+                case 3 -> d = Discipline.BACKSTROKE;
+                case 4 -> d = Discipline.BREASTSTROKE;
+                default -> System.out.println("That's not a valid choice. Try again.");
+            }
+            if (d != null && !chosen.contains(d)) { // undgå dubletter
+                chosen.add(d);
+            }
+        }
+    }
+
     private static double awaitInputDouble(Scanner scanner, String text) {
         while (true) {
             try {
-                // replace(",", ".") så både 32,45 og 32.45 virker
+                // replace(",", ".") both comma and dot works now
                 return Double.parseDouble(awaitInput(scanner, text).trim().replace(",", "."));
             } catch (NumberFormatException e) {
                 System.out.println("That is not a number! Enter e.g. 32.45");
@@ -214,8 +247,15 @@ public class UserInterface {
             String name = promptMemberName();
             LocalDate dateOfBirth = promptLocalDateFromString(1, "Date of birth");
             ActivityType activityType = parseActivityType();
+
+            // Kun konkurrencesvømmere skal vælge discipliner
+            List<Discipline> disciplines = new ArrayList<>();
+            if (activityType == ActivityType.COMPETITIVE) {
+                disciplines = parseDisciplines();
+            }
+
             // creates the member and adds them to the memberList
-            boolean result = controller.createMember(name, dateOfBirth, activityType);
+            boolean result = controller.createMember(name, dateOfBirth, activityType, disciplines);
             // result handling, prints a message if it fails or not for some unknown reason.
             if (result) {
                 System.out.println("Created the member");
@@ -233,7 +273,12 @@ public class UserInterface {
             System.out.println("There are no members in the club.");
         } else {
             for (Member member : members) {
-                System.out.println(formatMember(member));
+                String line = formatMember(member);
+                // Konkurrencesvømmere får også deres discipliner vist
+                if (member instanceof Competitive_swimmer swimmer) {
+                    line += " | " + swimmer.getDisciplines();
+                }
+                System.out.println(line);
             }
         }
     }
@@ -267,7 +312,37 @@ public class UserInterface {
 
         if (controller.addTime(uuid, discipline, time, date)) {
             System.out.println("Time registered");
-        } else System.out.println("No competitive swimmer with that UUID");
+        } else System.out.println("Time not registered (unknown UUID or not faster than current best time)");
+    }
+
+    private void registerCompetitionResult() {
+        System.out.println("Registering a new competition result...");
+        for (Member m : controller.getMemberArrayList()) {
+            if (m instanceof Competitive_swimmer) {
+                System.out.println(m.getUUID() + " - " + m.getName());
+            }
+        }
+
+        int uuid = awaitInputInt(scanner, "Swimmer UUID?");
+        String competitionName = awaitInput(scanner, "Competition name?");
+        LocalDate date = promptLocalDateFromString(1, "Competition date");
+        Discipline discipline = parseDiscipline(scanner);
+        int placement = awaitInputInt(scanner, "Competition placement?");
+
+        while (placement <= 0) {
+            System.out.println("Placement must be a positive number!");
+            placement = awaitInputInt(scanner, "Competition placement?");
+        }
+        double time = awaitInputDouble(scanner, "Time in seconds (e.g. 32.45)?");
+        try {
+            if (controller.addCompetitionResult(uuid, competitionName, date, discipline, placement, time)) {
+                System.out.println("Competition result registered!");
+            } else {
+                System.out.println("No competitive swimmer with that UUID");
+            }
+        } catch (IllegalArgumentException e) {
+            System.out.println(e.getMessage());
+        }
     }
 
     //todo: prase teams instead of members

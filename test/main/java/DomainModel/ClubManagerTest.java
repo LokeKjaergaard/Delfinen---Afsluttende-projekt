@@ -1,11 +1,13 @@
 package DomainModel;
 
+import Activities.Discipline;
 import Users.ActivityType;
 import Users.Member;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDate;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -42,8 +44,8 @@ class ClubManagerTest {
 
     @Test
     void testFindMemberUUID() {
-        clubManager.createMember("John", LocalDate.parse("2020-09-09"), ActivityType.PASSIVE);
-        clubManager.createMember("Jane", LocalDate.parse("2008-07-01"), ActivityType.COMPETITIVE);
+        clubManager.createMember("John", LocalDate.parse("2020-09-09"), ActivityType.PASSIVE,  List.of(Discipline.CRAWL));
+        clubManager.createMember("Jane", LocalDate.parse("2008-07-01"), ActivityType.COMPETITIVE,  List.of(Discipline.CRAWL));
 
         int janeUUID = clubManager.getMemberArrayList().get(1).getUUID();
 
@@ -56,10 +58,10 @@ class ClubManagerTest {
 
     @Test
     void testFindMemberByName() {
-        clubManager.createMember("John", LocalDate.parse("2020-09-09"), ActivityType.PASSIVE);
-        clubManager.createMember("Jane", LocalDate.parse("2008-07-01"), ActivityType.COMPETITIVE);
+        memberManager.createMember("John", LocalDate.parse("2020-09-09"), ActivityType.PASSIVE);
+        memberManager.createMember("Jane", LocalDate.parse("2008-07-01"), ActivityType.COMPETITIVE);
 
-        Member result = clubManager.findMemberByName("John");
+        Member result = memberManager.findMemberByName("John");
 
         assertNotNull(result);
         assertEquals("John", result.getName());
@@ -70,7 +72,7 @@ class ClubManagerTest {
 
     @Test
     void testGetMembers() {
-        assertNotNull(clubManager.getMemberArrayList());
+        assertNotNull(memberManager.getMemberArrayList());
     }
 
 }
