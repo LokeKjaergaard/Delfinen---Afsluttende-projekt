@@ -331,4 +331,18 @@ public class UserInterface {
             System.out.println(e.getMessage());
         }
     }
+
+    private void payOffDebt(){
+
+
+
+
+
+
+    }
+
+
+
+
+
 }
