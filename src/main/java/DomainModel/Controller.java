@@ -52,7 +52,7 @@ public class Controller {
     }
 
     public boolean isCompetitiveSwimmer(int uuid) {
-        Member member = memberManager.findMemberByUUID(uuid);
+        Member member = clubManager.findMemberByUUID(uuid);
         return member instanceof Competitive_swimmer;
     }
 
@@ -80,7 +80,7 @@ public class Controller {
 
 
     public int registerPayment(int uuid, int paymentAmount) {
-        Member member = memberManager.findMemberByUUID(uuid);
+        Member member = clubManager.findMemberByUUID(uuid);
 
         if (member == null) {
             throw new IllegalArgumentException("Member does not exist");
