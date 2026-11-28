@@ -2,6 +2,7 @@ package DomainModel;
 
 import Activities.Discipline;
 import DataSource.FileHandler;
+import Membership.Member_type;
 import Users.ActivityType;
 import Users.BestTime;
 import Users.Competitive_swimmer;
@@ -15,6 +16,8 @@ import java.util.List;
 public class Controller {
     private final FileHandler fileHandler = new FileHandler("members.csv");
     private final MemberManager memberManager = new MemberManager();
+    private final FileHandler fileHandler = new FileHandler("temp.csv");
+    private final ClubManager clubManager = new ClubManager();
     private boolean changed = false;
 
     public Controller() {
@@ -22,11 +25,11 @@ public class Controller {
     }
 
     public ArrayList<Member> getMemberArrayList() {
-        return memberManager.getMemberArrayList();
+        return clubManager.getMemberArrayList();
     }
 
     public boolean createMember(String name, LocalDate dateOfBirth, ActivityType activityType, List<Discipline> disciplines) {
-        boolean result = memberManager.createMember(name, dateOfBirth, activityType, disciplines);
+        boolean result = clubManager.createMember(name, dateOfBirth, activityType, disciplines);
         if (result) {
             changed = true;
         }
@@ -34,14 +37,14 @@ public class Controller {
     }
 
     public boolean deleteMember(Member member) {
-        boolean result = memberManager.deleteMember(member);
+        boolean result = clubManager.deleteMember(member);
         if (result) {
             changed = true;
         }
         return result;
     }
     public boolean addTime(int uuid, Discipline discipline, double time, LocalDate date) {
-        Member member = memberManager.findMemberByUUID(uuid);
+        Member member = clubManager.findMemberByUUID(uuid);
         if (member instanceof Competitive_swimmer swimmer) {
             swimmer.addTime(discipline, new BestTime(time, date));
             changed = true;
@@ -51,12 +54,12 @@ public class Controller {
     }
 
     public boolean isCompetitiveSwimmer(int uuid) {
-        Member member = memberManager.findMemberByUUID(uuid);
+        Member member = clubManager.findMemberByUUID(uuid);
         return member instanceof Competitive_swimmer;
     }
 
     public boolean addCompetitionResult(int uuid, String competitionName, LocalDate date, Discipline discipline, int placement, double time) {
-        Member member = memberManager.findMemberByUUID(uuid);
+        Member member = clubManager.findMemberByUUID(uuid);
         if (member instanceof Competitive_swimmer swimmer) {
             if (!swimmer.getDisciplines().contains(discipline)) {
                 throw new IllegalArgumentException("The swimmer is not registered for this dislipline!");
@@ -67,5 +70,26 @@ public class Controller {
            return true;
         }
         return false;
+    }
+
+    public ArrayList<Team> getTeams() {
+        return clubManager.getTeams();
+    }
+
+    public boolean createTeam(ArrayList<Member> members, Member trainer, Member_type memberType) {
+        return clubManager.createTeam(members, trainer, memberType);
+    }
+
+
+    public int registerPayment(int uuid, int paymentAmount) {
+        Member member = clubManager.findMemberByUUID(uuid);
+
+        if (member == null) {
+            throw new IllegalArgumentException("Member does not exist");
+        }
+
+        int surplus = member.getPayments().registerPayment(paymentAmount);
+        changed = true;
+        return surplus;
     }
 }

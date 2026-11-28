@@ -28,7 +28,6 @@ public class Payments {
         } else {
             return false;
         }
-
     }
 
     public int registerPayment(int paymentAmount) {
@@ -45,7 +44,6 @@ public class Payments {
             int paying = Math.min(surplus, yearlyPayment.getAmountOwed());
             yearlyPayment.payDebt(paying);
             surplus -= paying;
-
 
         }
         return surplus;

@@ -2,6 +2,7 @@ package UI;
 
 import Activities.Discipline;
 import DomainModel.Controller;
+import DomainModel.Team;
 import Membership.Member_type;
 import Users.ActivityType;
 import Users.Competitive_swimmer;
@@ -28,6 +29,7 @@ public class UserInterface {
                 case "add time" -> addTime();
                 case "fees" -> showAnnualFees();
                 case "add competition result" -> registerCompetitionResult();
+                case "show teams" -> showTeams();
                 case "exit" -> {
                     return;
                 }
@@ -137,6 +139,22 @@ public class UserInterface {
                 return Integer.parseInt(awaitInput(scanner, text).trim());
             } catch (NumberFormatException e) {
                 System.out.println("That is not a whole number! Enter a whole number ex: 1, 2, 3 or 4");
+            }
+        }
+    }
+
+    private static boolean awaitInputBool(Scanner scanner, String text) {
+        while (true) {
+            String input = awaitInput(scanner, text + " (type yes/no)").toLowerCase();
+
+            switch (input) {
+                case "yes" -> {
+                    return true;
+                }
+                case "no" -> {
+                    return false;
+                }
+                default -> System.out.println("No a valid choice! (Only yes/no is allowed)");
             }
         }
     }
@@ -329,6 +347,82 @@ public class UserInterface {
             }
         } catch (IllegalArgumentException e) {
             System.out.println(e.getMessage());
+        }
+    }
+
+
+        private void registerPayment() {
+            System.out.println("Registering a payment...");
+
+            // 1. Vis medlemmer og hvad de skylder
+            for (Member m : controller.getMemberArrayList()) {
+                System.out.println(m.getUUID() + " - " + m.getName() + " - owes " + m.getPayments().getTotalOwed() + " kr.");
+            }
+
+            // 2. Spørg kassereren
+            int uuid = awaitInputInt(scanner, "Input user ID");
+            int amount = awaitInputInt(scanner, "Input payment amount");
+
+            // 3. Kald controlleren og håndtér resultatet
+            try {
+                int surplus = controller.registerPayment(uuid, amount);
+                // skriv en besked: betaling registreret
+                // hvis surplus er større end 0: skriv hvor meget medlemmet skal have tilbage
+            } catch (IllegalArgumentException e) {
+                System.out.println(e.getMessage());
+            }
+        }
+
+    //todo: prase teams instead of members
+    private void showTeams() {
+        ArrayList<Member> teams = controller.getMemberArrayList();
+        System.out.println("Showing teams...");
+        if (teams.isEmpty()) {
+            System.out.println("There's no teams to display.");
+            return;
+        }
+        System.out.println("no - Senior only");
+        System.out.println("yes - Junior only");
+        boolean sortByJunior = awaitInputBool(scanner, "Show senior or junior teams?");
+        printMembersByMemberType(sortByJunior);
+    }
+
+    private void printTeams(boolean isJunior, ArrayList<Team> teamArrayList) {
+        //todo
+        if (teamArrayList.isEmpty()) {
+            System.out.println("There's no teams to display.");
+            return;
+        }
+
+        Member_type memberType;
+
+        if (isJunior) {
+            memberType = Member_type.JUNIOR;
+        } else {
+            memberType = Member_type.SENIOR;
+        }
+
+        for (Team team : teamArrayList) {
+            if (team.getTeamMemberType() == memberType) {
+                if (team.getTeamName().isEmpty()) {
+                    System.out.println(team.getTeamNumber() + " | Trainer: " + team.getTeamTrainer().getName() + " | Team member(s): " + team.getAllTeamMembers().size());
+                    continue;
+                }
+                System.out.println(team.getTeamNumber() + " | Name: " + team.getTeamName() + "| Trainer: " + team.getTeamTrainer().getName() + " | Team member(s): " + team.getAllTeamMembers().size());
+            }
+        }
+    }
+
+    private void printMembersByMemberType(boolean isJunior) {
+        ArrayList<Member> members = controller.getMemberArrayList();
+        if (members.isEmpty()) {
+            System.out.println("There's no member(s) to display.");
+            return;
+        }
+        for (Member member : members) {
+            if (member.isJunior() == isJunior) {
+                System.out.println(formatMember(member));
+            }
         }
     }
 }
