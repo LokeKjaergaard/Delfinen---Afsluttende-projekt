@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Controller {
-    private final FileHandler fileHandler = new FileHandler("temp.csv");
+    private final FileHandler fileHandler = new FileHandler("members.csv");
     private final MemberManager memberManager = new MemberManager();
     private boolean changed = false;
 

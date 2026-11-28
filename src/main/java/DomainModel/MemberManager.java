@@ -44,8 +44,14 @@ public class MemberManager {
         return memberArrayList.add(member);
     }
 
+    public boolean loadMember(Member member) {
+        if (member == null || UUIDArrayList.contains(member.getUUID())) {
+            return false;
+        }
 
-
+        UUIDArrayList.add(member.getUUID());
+        memberArrayList.add(member);
+    }
 
     public boolean deleteMember(Member member) {
         return memberArrayList.remove(member);
